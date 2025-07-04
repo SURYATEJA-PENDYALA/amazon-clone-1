@@ -662,7 +662,7 @@
 
 
 
-  let searchHTML;
+ let searchHTML;
 
 searchHTML=`<input class="search-bar js-search-bar" type="text" placeholder="Search"
 onkeydown="enterkeydown(event)"
@@ -674,7 +674,7 @@ onkeydown="enterkeydown(event)"
    >
           <img class="search-icon" src="images/icons/search-icon.png">
         </button>
-      `
+      `;
  document.querySelector('.js-middle-section').innerHTML=searchHTML;     
 
 
@@ -683,41 +683,20 @@ onkeydown="enterkeydown(event)"
     const inputsearch=innerElement.value;
 
 
-
+let totalkeywords=[];
 products.forEach((product)=>{
   let i;
   
+  
  
  for(i=0;i<product.keywords.length;i++){
+
   if(inputsearch===product.keywords[i]||inputsearch===product.name){
-   console.log(product.keywords[i]);
-    searchoperation(product);
-   
-  }
-  }
- 
-;
-})
-  
- 
-  }
+   totalkeywords.push(product);
+   let productsHTML=``;
+   totalkeywords.forEach((product)=>{
 
-  
-
- 
-
-  
-  
-   function enterkeydown(event){
-    if(event.key==='Enter'){
-      searching();
-    }
-  }
-
-
- function searchoperation(product){
-  let productsHTML;
-    productsHTML = `
+    productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -762,14 +741,88 @@ products.forEach((product)=>{
             Added
           </div>
     
-          <button class="add-to-cart-button button-primary js-add-to-cart"
+          <button class="add-to-cart-button button-primary js-add-to-cart
+          js-add-to-cart-search"
           data-product-id="${product.id}">
             Add to Cart
           </button>
         </div>
       `;
+
+    });
     document.querySelector('.js-products-grid').innerHTML = productsHTML;
-/*function updateCartQuantity() {
+    updateCartQuantity();
+   
+   }
+ 
+  
+  
+  }
+ 
+    
+ 
+
+})
+
+ 
+ 
+  }
+
+  
+
+ 
+
+  
+  
+   function enterkeydown(event){
+    if(event.key==='Enter'){
+      searching();
+    }
+  }
+
+let cart;
+   cart = JSON.parse(localStorage.getItem('cart'));
+if (cart.length===0) {
+  cart = [{
+    productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
+    quantity: 2,
+    deiveryOptionId:'1'
+  }, {
+    productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
+    quantity: 1,
+    deiveryOptionId:'2'
+  }];
+}
+
+function saveToStorage() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function addToCart(productId) {
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
+
+  if (matchingItem) {
+    matchingItem.quantity += 1;
+  } else {
+    cart.push({
+      productId: productId,
+      quantity: 1,
+      deliveryOptionId:'1'
+    });
+  }
+
+  saveToStorage();
+}
+
+ 
+  
+function updateCartQuantity() {
   let cartQuantity = 0;
 
   cart.forEach((cartItem) => {
@@ -780,21 +833,29 @@ products.forEach((product)=>{
     .innerHTML = cartQuantity;
 }
 
-document.querySelectorAll('.js-add-to-cart')
+document.querySelectorAll('.js-add-to-cart-search')
   .forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId;
       addToCart(productId);
       updateCartQuantity();
+     
     });
-  }); */
+  }); 
  
- }
-
-
- function formatCurrency(priceCents) {
+ 
+  function formatCurrency(priceCents) {
   return (Math.round(priceCents) / 100).toFixed(2);
 }
+ 
+
+
+
+
+
+
+
+
 
 
 
